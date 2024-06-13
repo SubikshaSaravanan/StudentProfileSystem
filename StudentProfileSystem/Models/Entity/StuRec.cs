@@ -19,27 +19,27 @@ namespace StudentProfileSystem.Models.Entity
 
         public void AddStudent(StudentRequest request)
         {
-            this.StudentName = request.Name;
-            this.Department = request.Dept;
-            this.Email = request.Email;
-            this.PhoneNumber = request.MobileNo;
-            this.Gender = request.Gender;
-            this.CreatedBy = request.CreatedBy;
-            this.ModifiedBy = request.CreatedBy;
-            this.CreatedAt = DateTime.Now;
-            this.ModifiedAt = DateTime.Now;
+            StudentName = request.Name;
+            Department = request.Dept;
+            Email = request.Email;
+            PhoneNumber = request.MobileNo;
+            Gender = request.Gender;
+            CreatedBy = request.CreatedBy;
+            ModifiedBy = request.CreatedBy;
+            CreatedAt = DateTime.UtcNow;
+            ModifiedAt = DateTime.UtcNow;
         }
 
 
         public void UpdateStudent(StudentRequest request)
         {
-            this.StudentName = request.Name;
-            this.Department = request.Dept;
-            this.Email = request.Email;
-            this.PhoneNumber = request.MobileNo;
-            this.Gender = request.Gender;
-            this.ModifiedBy = request.CreatedBy;
-            this.ModifiedAt = DateTime.Now;
+            StudentName = request.Name;
+            Department = request.Dept;
+            Email = request.Email;
+            PhoneNumber = request.MobileNo;
+            Gender = request.Gender;
+            ModifiedBy = request.CreatedBy;
+            ModifiedAt = DateTime.UtcNow;
         }
 
        

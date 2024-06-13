@@ -35,7 +35,22 @@ namespace StudentProfileSystem.Controllers
             return !string.IsNullOrEmpty(response) ? Ok(response) : NotFound(response);
         }
 
-      
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            string response = stuService.DeleteStudent(id);
+            return !string.IsNullOrEmpty(response) ? Ok(response) : NotFound(response);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var student = stuService.GetStudent(id);
+            return student != null ? Ok(student) : NotFound();
+        }
+
+
+
     }
 
 
