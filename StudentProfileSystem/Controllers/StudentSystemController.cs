@@ -5,6 +5,7 @@ using StudentProfileSystem.Models.Entity;
 using StudentProfileSystem.Data;
 using StudentProfileSystem.Controllers;
 using StudentProfileSystem.Services;
+using StudentProfileSystem.Models.Response;
 
 namespace StudentProfileSystem.Controllers
 {
@@ -12,16 +13,16 @@ namespace StudentProfileSystem.Controllers
     [ApiController]
     public class StudentSystemController : ControllerBase
     {
-            private readonly StudentService stuService;
+        private readonly StudentService stuService;
 
 
-            public StudentSystemController(StudentService studentService)
-            {
-                stuService = studentService;
+        public StudentSystemController(StudentService studentService)
+        {
+            stuService = studentService;
 
 
-            }
-       [HttpPost]
+        }
+        [HttpPost]
         public IActionResult Create(StudentRequest request)
         {
             string response = stuService.CreateStudent(request);
@@ -29,9 +30,9 @@ namespace StudentProfileSystem.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, StudentRequest request)
+        public IActionResult Update(int id, StudentRequestUpdate request)
         {
-            string response = stuService.UpdateStudent(id, request);
+            var response = stuService.UpdateStudent(id, request);
             return !string.IsNullOrEmpty(response) ? Ok(response) : NotFound(response);
         }
 
@@ -48,11 +49,25 @@ namespace StudentProfileSystem.Controllers
             var student = stuService.GetStudent(id);
             return student != null ? Ok(student) : NotFound();
         }
+    
+       
 
-
-
+            [HttpGet("StuDep/{DID}")]
+            public ActionResult<List<StudentResponse>> GetStudentsByDID(int DID)
+            {
+                var students = stuService.GetStudentsByDID(DID);
+                if (students == null )
+                {
+                    return NotFound();
+                }
+                return Ok(students);
+            }
+        }
     }
 
 
-}
+
+
+
+
     

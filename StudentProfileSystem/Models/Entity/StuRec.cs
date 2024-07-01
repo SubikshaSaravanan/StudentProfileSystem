@@ -1,6 +1,7 @@
 ﻿using StudentProfileSystem.Models.Request;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentProfileSystem.Models.Entity
 {
@@ -9,18 +10,20 @@ namespace StudentProfileSystem.Models.Entity
         [Key]
         public int ID { get; set; }
 
-        [Required]
         public string StudentName { get; set; }
-        public string Department { get; set; }
+       
         public string Gender { get; set; }
         public string? Email { get; set; }
         public string PhoneNumber { get; set; }
+        [ForeignKey("DID")]
+        public int DID { get; set; }
+        public StuDep StuDep { get; set; }
 
 
         public void AddStudent(StudentRequest request)
         {
-            StudentName = request.Name;
-            Department = request.Dept;
+            StudentName = request.StudentName;
+            DID = request.DID;
             Email = request.Email;
             PhoneNumber = request.MobileNo;
             Gender = request.Gender;
@@ -31,14 +34,14 @@ namespace StudentProfileSystem.Models.Entity
         }
 
 
-        public void UpdateStudent(StudentRequest request)
+        public void UpdateStudent(StudentRequestUpdate request)
         {
-            StudentName = request.Name;
-            Department = request.Dept;
+            StudentName = request.StudentName;
+            DID = request.DID;
             Email = request.Email;
             PhoneNumber = request.MobileNo;
             Gender = request.Gender;
-            ModifiedBy = request.CreatedBy;
+            ModifiedBy = request.ModifiedBy;
             ModifiedAt = DateTime.UtcNow;
         }
 

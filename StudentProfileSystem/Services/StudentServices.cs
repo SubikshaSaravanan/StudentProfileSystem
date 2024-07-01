@@ -1,4 +1,5 @@
-﻿using StudentProfileSystem.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentProfileSystem.Data;
 using StudentProfileSystem.Models.Entity;
 using StudentProfileSystem.Models.Request;
 using StudentProfileSystem.Models.Response;
@@ -21,57 +22,60 @@ namespace StudentProfileSystem.Services
         {
             StuRec student = new StuRec();
             student.AddStudent(request);
-            context.StudentInfoHub.Add(student);
+            context.StuInfo.Add(student);
             context.SaveChanges();
             return $"{student.ID} was added";
         }
 
-        public string UpdateStudent(int id, StudentRequest request)
+        public string UpdateStudent(int id, StudentRequestUpdate request)
         {
-            var student = context.StudentInfoHub.Find(id);
+            var student = context.StuInfo.Find(id);
             if (student == null)
             {
                 return "Student not found";
             }
 
             student.UpdateStudent(request);
-            context.StudentInfoHub.Update(student);
+            context.StuInfo.Update(student);
             context.SaveChanges();
             return $"{student.ID} was updated";
         }
 
         public string DeleteStudent(int id)
         {
-            var student = context.StudentInfoHub.Find(id);
+            var student = context.StuInfo.Find(id);
             if (student == null)
             {
                 return "Student not found";
             }
 
-            context.StudentInfoHub.Remove(student);
+            context.StuInfo.Remove(student);
             context.SaveChanges();
             return $"{student.ID} was deleted";
         }
 
         public StudentResponse GetStudent(int id)
         {
-            var student = context.StudentInfoHub.Find(id);
-            if (student == null)
+            var students = (from e in context.StuInfo where e.ID == id select e).Include(e => e.StuDep).FirstOrDefault();
+            if (students == null)
             {
                 return null;
             }
+            return StudentResponse.FromStudentRecord(students);
+        }  
+        public List<StudentResponse> GetStudentsByDID(int DID)
+        {  
+            var employees = (from e in context.StuInfo
+                             where e.DID == DID
+                             orderby e.StudentName
+                             select e)
+                            .Include(e => e.StuDep)
+                            .ToList();
+            return employees.Select(StudentResponse.FromStudentRecord).ToList();
 
-            return new StudentResponse
-            {
-                ID = student.ID,
-                StudentName = student.StudentName,
-                Department = student.Department,
-                Email = student.Email,
-                PhoneNumber = student.PhoneNumber,
-                Gender = student.Gender,
-               
-            };
+
         }
-
     }
+
 }
+

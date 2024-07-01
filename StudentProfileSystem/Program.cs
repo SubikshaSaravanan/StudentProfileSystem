@@ -5,7 +5,7 @@ using StudentProfileSystem.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApiContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("StuAmin")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("StAdmin")));
 
 // Add services to the container.
 
@@ -14,6 +14,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<StudentService>();
+
+
 
 var app = builder.Build();
 

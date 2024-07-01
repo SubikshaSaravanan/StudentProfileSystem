@@ -17,10 +17,38 @@ namespace StudentProfileSystem.Data
             protected override void OnConfiguring(DbContextOptionsBuilder options)
             {
 
-                options.UseNpgsql(Configuration.GetConnectionString("StuAdmin"));
+                options.UseNpgsql(Configuration.GetConnectionString("StAdmin"));
             }
-            public DbSet<StuRec> StudentInfoHub { get; set; }
+            public DbSet<StuRec> StuInfo{ get; set; }
+            public DbSet<StuDep>Department{ get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<StuDep>()
+                .HasKey(d => d.DID); // Primary key configuration
+
+            // Configure relationships if needed
+            modelBuilder.Entity<StuDep>()
+                .HasMany(d => d.Students)
+                .WithOne(e => e.StuDep)
+                .HasForeignKey(e => e.DID);
+
+            // Seed initial data
+            modelBuilder.Entity<StuDep>().HasData(
+                new StuDep { DID = 1, DepartmentName = "Tamil" },
+                new StuDep { DID = 2, DepartmentName = "English" },
+                new StuDep { DID = 3, DepartmentName = "Electronics" },
+                new StuDep { DID = 4, DepartmentName = "Accounts" },
+                new StuDep { DID = 5, DepartmentName = "Physics" }
+            );
+
+            base.OnModelCreating(modelBuilder);
         }
+
+
     }
+
+
+}
+
 

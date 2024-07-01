@@ -12,7 +12,7 @@ using StudentProfileSystem.Data;
 namespace StudentProfileSystem.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20240613090352_InitialCreate")]
+    [Migration("20240619101507_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,50 @@ namespace StudentProfileSystem.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("StuDep", b =>
+                {
+                    b.Property<int>("DID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DID"));
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("DID");
+
+                    b.ToTable("Department");
+
+                    b.HasData(
+                        new
+                        {
+                            DID = 1,
+                            DepartmentName = "Tamil"
+                        },
+                        new
+                        {
+                            DID = 2,
+                            DepartmentName = "English"
+                        },
+                        new
+                        {
+                            DID = 3,
+                            DepartmentName = "Electronics"
+                        },
+                        new
+                        {
+                            DID = 4,
+                            DepartmentName = "Accounts"
+                        },
+                        new
+                        {
+                            DID = 5,
+                            DepartmentName = "Physics"
+                        });
+                });
 
             modelBuilder.Entity("StudentProfileSystem.Models.Entity.StuRec", b =>
                 {
@@ -39,9 +83,8 @@ namespace StudentProfileSystem.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<string>("Department")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("DID")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
@@ -66,7 +109,25 @@ namespace StudentProfileSystem.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("StudentInfoHub");
+                    b.HasIndex("DID");
+
+                    b.ToTable("StuInfo");
+                });
+
+            modelBuilder.Entity("StudentProfileSystem.Models.Entity.StuRec", b =>
+                {
+                    b.HasOne("StuDep", "StuDep")
+                        .WithMany("Students")
+                        .HasForeignKey("DID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StuDep");
+                });
+
+            modelBuilder.Entity("StuDep", b =>
+                {
+                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }

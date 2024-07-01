@@ -3,8 +3,8 @@
     public class StudentRequest
   
     {
-            public string Name { get; set; }
-            public string Dept { get; set; }
+            public string StudentName { get; set; }
+            public int DID { get; set; }
             public string Gender { get; set; }
             public string? Email { get; set; }
             public string? MobileNo { get; set; }
